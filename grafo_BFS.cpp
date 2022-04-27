@@ -78,12 +78,7 @@ int main()
 {
 	// Grafo de ejemplo
 	Grafo g(9);
-//	g.insertavertice(0, 1);
-//	g.insertavertice(0, 2);
-//	g.insertavertice(1, 2);
-//	g.insertavertice(2, 0);
-//	g.insertavertice(2, 3);
-//	g.insertavertice(3, 3);
+//	vertices
 
 g.insertavertice(1,2);
 g.insertavertice(1,3);
