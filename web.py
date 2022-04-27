@@ -1,31 +1,30 @@
-# Import libraries
+# Importar librerias
 from urllib.request import urljoin
 from bs4 import BeautifulSoup
 import requests
 from urllib.request import urlparse
   
   
-# Set for storing urls with same domain
-links_intern = set()
+# Lista (set) para almacenar urls del mismo dominio - interno  
+links_intern = set() #conjunto
 input_url = "http://posgradounap.pe/programas-de-doctorado/"
 depth = 1
   
-# Set for storing urls with different domain
+# Conjunto de urls con dominio distinto - externo
 links_extern = set()
   
   
-# Method for crawling a url at next level
-def level_crawler(input_url):
+# metodo para rastrear una url en un sgte nivel 
+def rastreoniveles(input_url):
     temp_urls = set()
     current_url_domain = urlparse(input_url).netloc
   
-    # Creates beautiful soup object to extract html tags
+    # crea un objeto beautiful soup para extraer etiquetas html
     beautiful_soup_object = BeautifulSoup(
         requests.get(input_url).content, "html.parser")
   
-    # Access all anchor tags from input 
-    # url page and divide them into internal
-    # and external categories
+    # acceder a todas las etiquetas de links en html atag.   
+    # y clasificarlas como internas y externas  
     for anchor in beautiful_soup_object.findAll("a"):
         href = anchor.attrs.get("href")
         if(href != "" or href != None):
@@ -53,19 +52,16 @@ if(depth == 0):
     print("Intern - {}".format(input_url))
   
 elif(depth == 1):
-    level_crawler(input_url)
+    rastreoniveles(input_url)
   
 else:
-    # We have used a BFS approach
-    # considering the structure as
-    # a tree. It uses a queue based
-    # approach to traverse
-    # links upto a particular depth.
+    # Se usa el enfoque BFS considerando la estructura de grafo, usar una cola basada en  
+    # recorrido de links para una profundidad en particular  
     queue = []
     queue.append(input_url)
     for j in range(depth):
         for count in range(len(queue)):
             url = queue.pop(0)
-            urls = level_crawler(url)
+            urls = rastreoniveles(url)
             for i in urls:
                 queue.append(i)
